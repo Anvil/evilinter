@@ -7,6 +7,7 @@ from . import tokens
 class Lexer:
 
     EOL = '\n'
+
     SPACE_SEPARATOR = ' \t'
 
     def __init__(self, buffer: Buffer):
@@ -31,6 +32,21 @@ class Lexer:
     @property
     def forward(self):
         return self.__buffer.forward
+
+    def __compare_ahead(self, index, other):
+        char = self.__buffer.ahead(index)
+        try:
+            return bool(other(char))
+        except TypeError as error:
+            if "is not callable" in str(error):
+                return char in other
+            raise
+        raise TypeError(f"Bad type for {other}: {type(other)}. "
+                        "Expected sequence or callable")
+
+    def compare_ahead(self, *others):
+        return all(self.__compare_ahead(index, other)
+                   for index, other in enumerate(others))
 
     def consume_select(self, func: Callable, cls: Type):
         while func(self.current):
