@@ -21,8 +21,16 @@ class Lexer:
         return self.__buffer.position
 
     @property
+    def current(self) -> str:
+        return self.__buffer.current
+
+    @property
     def token(self) -> str:
         return self.__buffer.token
+
+    @property
+    def forward(self):
+        return self.__buffer.forward
 
     def consume_select(self, func: Callable, cls: Type):
         while func(self.current):
