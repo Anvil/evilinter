@@ -10,16 +10,16 @@ class Token():
 
     def __init__(self, chars, position: Position):
         self.__value = ''.join(chars)
-        self.__line, self.__char = position.start
+        self.__position = position
         LOGGER.debug(f"Found new token: {self}")
 
     @property
     def line(self):
-        return self.__line
+        return self.__position.line
 
     @property
     def char(self):
-        return self.__char
+        return self.__position.char
 
     @property
     def value(self):
