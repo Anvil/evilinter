@@ -1,47 +1,52 @@
+import re
+
 from ..lexer import Lexer
+from .tokens import *
 
 
 class BashLexer(Lexer):
 
     __word_char = re.compile('[-a-zA-Z0-9+_]').match
-
-    def __consume(self, func):
-        token = []
-        while func(self.current):
-            token.append(self.current)
-            self.forward()
-        if token:
-            yield token
    
-    def __consume_space(self, blanks=SPACE):
-        return self.__consume(lambda char: char in blanks)
-
-    def __consume_shebang_shell(self):
-        return self.__consume(lambda char: char not in {' '} | self.EOL)
-
-    def __char(self, char):
-        if self.current == char:
-            self.forward()
-            yield char
-
-    def __consume_rest_of_line(self):
-        yield from self.__consume(lambda char: char not in self.EOL)
-
-    def __consume_comment(self):
-        if self.current == '#':
-            yield from self.__consume_rest_of_line()
-
     def __consume_word(self):
         self.__consume(str.isalnum)
 
-    def __consume_instruction(self):
-        yield from self.__consume_words()
-        yield from self.__consume_comment()
+    @staticmethod
+    def __not_single_quote(char: str):
+        return char != "'"
+
+    def single_quote(self):
+        self.forward()
+        yield OpeningSingleQuote
+        yield from self.consume_select(
+            self.__not_single_quote, SingleQuotedString)
+        self.forward()
+        yield ClosingSingleQuote
+
+    def double_quote(self):
+        pass
+
+    def subshell(self):
+        pass
+
+    def expansion(self):
+        pass
+
+    def comment(self):
+        yield from self.consume_rest_of_line(Comment)
 
     def __iter__(self):
-        while True:
-            if 
-            yield from self.__consume_instruction()
-            yield from self.__consume_comment()
-            yield from self.__eol()
-            assert current != self._current, ''.join(self._buffer[current:100])
+        last_token_position = None
+        consumers = {"#": self.comment,
+                     "'": self.single_quote,
+                     '"': self.double_quote,
+                     "(": self.subshell,
+                     "$": self.expansion}
+        while last_token_position != self.buffer.position:
+            last_token_position = self.buffer.position
+            try:
+                consumer = consumers[self.current]
+            except KeyError:
+                pass
+            else:
+                yield from consumer()
