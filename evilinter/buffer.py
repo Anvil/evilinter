@@ -41,6 +41,10 @@ class Buffer():
         self.__position = Position()
 
     @property
+    def filename(self):
+        return self.__filename
+
+    @property
     def position(self):
         return self.__position
 
