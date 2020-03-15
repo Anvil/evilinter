@@ -9,7 +9,7 @@ class SheBangLexer(Lexer):
             lambda char: char not in ' '  + self.EOL, SheBangShell)
 
     def __iter__(self):
-        if self.buffer[0:2] != ['#', '!']:
+        if not self.compare_ahead('#', '!'):
             return
         self.buffer + 2
         yield SheBang
