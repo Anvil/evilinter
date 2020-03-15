@@ -48,6 +48,10 @@ class Buffer():
         return self.__position
 
     @property
+    def _absolute(self):
+        return self.__position.absolute
+
+    @property
     def current(self):
         return self.__buffer[self.position.absolute]
 
@@ -62,15 +66,15 @@ class Buffer():
 
     @property
     def token(self):
-        return self[self.__start.absolute:self.__position.absolute]
+        return self[self.__start.absolute:self._absolute]
 
     def __getitem__(self, key):
         return self.__buffer[key]
 
     def __add__(self, other: int):
-        self.position + self[self.position.absolute:self.position.absolute + other]
+        self.position + self[self._absolute:self._absolute + other]
 
     def __str__(self):
-        absolute = self.position.absolute
+        absolute = self._absolute
         return f"{self.__class__.__name__}({self.filename} at "\
             f"{repr(self.position)}: {self.__buffer[absolute:absolute + 8]}"
