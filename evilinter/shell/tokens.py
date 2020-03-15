@@ -15,3 +15,27 @@ class ClosingSingleQuote(Token):
 
 class SingleQuotedString(Token):
     pass
+
+
+class OpeningDoubleQuote(Token):
+    pass
+
+
+class ClosingDoubleQuote(Token):
+    pass
+
+
+class WhiteSpace(Token):
+    pass
+
+
+class OpeningDoubleBracket(Token):
+    pass
+
+
+class ClosingDoubleBracket(Token):
+    pass
+
+
+class Variable(Token):
+    pass
