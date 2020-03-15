@@ -1,11 +1,12 @@
 from typing import Sequence
 
+
 class Position:
 
-    def __init__(self):
-        self.absolute = 0
-        self.line = 1
-        self.char = 1
+    def __init__(self, absolute: int = 0, line: int = 1, char: int = 1):
+        self.absolute = absolute
+        self.line = line
+        self.char = char
 
     def set(self, other: '__class__'):
         self.absolute = other.absolute
