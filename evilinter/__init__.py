@@ -26,5 +26,5 @@ class SHLexer:
     def __iter__(self):
         for lexer in (SheBangLexer, BashLexer):
             for cls in lexer(self.__buffer):
-                yield cls(''.join(self.token), self.position)
+                yield cls(''.join(self.token), self.__buffer.token_start.copy())
                 self.__buffer.validate()
