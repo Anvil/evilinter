@@ -58,6 +58,10 @@ class Buffer():
         return self.__position
 
     @property
+    def token_start(self):
+        return self.__start
+
+    @property
     def _absolute(self):
         return self.__position.absolute
 
