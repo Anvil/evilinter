@@ -21,6 +21,15 @@ class Position:
         else:
             self.char += 1
 
+    def copy(self) -> '__class__':
+        return self.__class__(self.absolute, self.line, self.char)
+
+    def __eq__(self, other) -> bool:
+        return isinstance(other, self.__class__) and \
+            self.absolute == other.absolute and \
+            self.line == other.line and \
+            self.char == other.char
+
     def __add__(self, other: Sequence[str]):
         for char in other:
             self.forward(char)
