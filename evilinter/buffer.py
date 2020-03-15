@@ -69,3 +69,8 @@ class Buffer():
 
     def __add__(self, other: int):
         self.position + self[self.position.absolute:self.position.absolute + other]
+
+    def __str__(self):
+        absolute = self.position.absolute
+        return f"{self.__class__.__name__}({self.filename} at "\
+            f"{repr(self.position)}: {self.__buffer[absolute:absolute + 8]}"
