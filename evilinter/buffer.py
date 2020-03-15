@@ -69,6 +69,9 @@ class Buffer():
     def current(self):
         return self.__buffer[self.position.absolute]
 
+    def ahead(self, index):
+        return self.__buffer[self.position.absolute + index]
+
     def forward(self):
         return self.position.forward(self.current)
 
