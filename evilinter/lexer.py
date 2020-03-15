@@ -10,6 +10,8 @@ class Lexer:
 
     SPACE_SEPARATOR = ' \t'
 
+    IFS = ' \t\n'
+
     def __init__(self, buffer: Buffer):
         self.__buffer = buffer
 
@@ -59,6 +61,9 @@ class Lexer:
 
     def consume_separator(self, cls: Type):
         return self.consume_chars(self.SPACE_SEPARATOR, cls)
+
+    def consume_ifs(self, cls: Type):
+        return self.consume_chars(self.IFS, cls)
 
     def consume_eol(self):
         return self.consume_chars(self.EOL, tokens.EOL)
