@@ -35,7 +35,7 @@ class Lexer:
     def forward(self):
         return self.__buffer.forward
 
-    def __compare_ahead(self, index, other):
+    def __compare_ahead(self, index: int, other) -> bool:
         char = self.__buffer.ahead(index)
         try:
             return bool(other(char))
@@ -46,9 +46,12 @@ class Lexer:
         raise TypeError(f"Bad type for {other}: {type(other)}. "
                         "Expected sequence or callable")
 
-    def compare_ahead(self, *others):
-        return all(self.__compare_ahead(index, other)
+    def compare_ahead(self, *others, offset: int = 0) -> bool:
+        return all(self.__compare_ahead(index + offset, other)
                    for index, other in enumerate(others))
+
+    def compare_word_ahead(self, *others, offset: int = 0) -> bool:
+        return self.compare_ahead(*others, self.IFS, offset=offset)
 
     def consume_select(self, func: Callable, cls: Type):
         while func(self.current):
