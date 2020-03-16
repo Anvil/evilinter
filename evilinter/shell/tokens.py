@@ -37,5 +37,33 @@ class ClosingDoubleBracket(Token):
     pass
 
 
+class ConditionnalUnaryOperator(Token):
+    pass
+
+
+class UnaryStringOperator(ConditionnalUnaryOperator):
+    pass
+
+
+class UnaryFileOperator(ConditionnalUnaryOperator):
+    pass
+
+
+class UnaryFDOperator(ConditionnalUnaryOperator):
+    pass
+
+
+class ConditionnalBinaryOperator(Token):
+    pass
+
+
+class OpeningParenthesis(Token):
+    pass
+
+
+class ClosingParenthesis(Token):
+    pass
+
+
 class Variable(Token):
     pass
