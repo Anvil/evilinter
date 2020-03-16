@@ -1,4 +1,4 @@
-from typing import Sequence
+from typing import Iterator
 
 
 class Position:
@@ -13,13 +13,15 @@ class Position:
         self.line = other.line
         self.char = other.char
 
-    def forward(self, char):
-        self.absolute += 1
-        if char == '\n':
-            self.line += 1
-            self.char = 1
-        else:
-            self.char += 1
+    def forward(self, chars: Iterator[str]):
+        for char in chars:
+            self.absolute += 1
+            if char == '\n':
+                self.line += 1
+                self.char = 1
+            else:
+                self.char += 1
+    __add__ = forward
 
     def copy(self) -> '__class__':
         return self.__class__(self.absolute, self.line, self.char)
@@ -29,10 +31,6 @@ class Position:
             self.absolute == other.absolute and \
             self.line == other.line and \
             self.char == other.char
-
-    def __add__(self, other: Sequence[str]):
-        for char in other:
-            self.forward(char)
 
     def __str__(self) -> str:
         return f"{self.line}:{self.char}"
@@ -72,8 +70,9 @@ class Buffer():
     def ahead(self, index):
         return self.__buffer[self.position.absolute + index]
 
-    def forward(self):
-        return self.position.forward(self.current)
+    def forward(self, length: int = 1):
+        self.position + self[self._absolute:self._absolute + length]
+    __add__ = forward
 
     def validate(self):
         self.__start.set(self.__position)
@@ -87,9 +86,6 @@ class Buffer():
 
     def __getitem__(self, key):
         return self.__buffer[key]
-
-    def __add__(self, other: int):
-        self.position + self[self._absolute:self._absolute + other]
 
     def __str__(self):
         absolute = self._absolute
