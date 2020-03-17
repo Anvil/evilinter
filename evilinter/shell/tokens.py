@@ -57,6 +57,18 @@ class ConditionnalBinaryOperator(Token):
     pass
 
 
+class BinaryFileOperator(ConditionnalBinaryOperator):
+    pass
+
+
+class BinaryIntegerOperator(ConditionnalBinaryOperator):
+    pass
+
+
+class BinaryStringOperator(ConditionnalBinaryOperator):
+    pass
+
+
 class OpeningParenthesis(Token):
     pass
 
@@ -65,5 +77,9 @@ class ClosingParenthesis(Token):
     pass
 
 
-class Variable(Token):
+class Parameter(Token):
+    pass
+
+
+class Number(Token):
     pass
