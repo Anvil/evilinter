@@ -1,4 +1,4 @@
-from typing import Type, Callable
+from typing import Type, Callable, Union
 from .buffer import Buffer, Position
 
 from . import tokens
@@ -52,6 +52,12 @@ class Lexer:
 
     def compare_word_ahead(self, *others, offset: int = 0) -> bool:
         return self.compare_ahead(*others, self.IFS, offset=offset)
+
+    def compare_words(self, *words: Tuple[str]) -> Union[str, bool]:
+        for word in words:
+            if self.compare_word_ahead(*list(word)):
+                return word
+        return False
 
     def consume_select(self, func: Callable, cls: Type):
         while func(self.current):
