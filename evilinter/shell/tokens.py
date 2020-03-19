@@ -25,6 +25,10 @@ class ClosingDoubleQuote(Token):
     pass
 
 
+class DoubleQuotedString(Token):
+    pass
+
+
 class WhiteSpace(Token):
     pass
 
@@ -82,4 +86,24 @@ class Parameter(Token):
 
 
 class Number(Token):
+    pass
+
+
+class FileDescriptor(Number):
+    pass
+
+
+class OutputRedirectionToFD(Token):
+    pass
+
+
+class OutputRedirectionToFile(Token):
+    pass
+
+
+class EscapedChar(Token):
+    pass
+
+
+class CommandStatusInvertion(Token):
     pass
