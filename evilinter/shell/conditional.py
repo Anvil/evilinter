@@ -3,7 +3,6 @@ from typing import Iterator, Tuple
 from ..typing import TokenYielder, TokenClass
 
 from ._common import _CommonLexer
-from ..tokens import Token
 from .tokens import *
 
 
@@ -14,46 +13,6 @@ class DoubleBracketConditionnalLexer(_CommonLexer):
             self.forward()
             yield from self.consume_select(self.variable_char, Parameter)
         # Else regular string: $% for instance is '$%'
-
-    def __double_quote_content(self):
-        while self.current != '"':
-            if self.current == "$":
-                yield from self.expansion()
-            elif self.current == "`":
-                yield from self.backquote()
-            else:
-                # Other misc literal content
-                return
-
-    def double_quote(self) -> TokenYielder:
-        self.forward()
-        yield OpeningDoubleQuote
-        yield from self.__double_quote_content()
-        self.forward()
-        yield ClosingDoubleQuote
-
-    def expansion(self) -> TokenYielder:
-        self.forward()
-        if self.current == "(":
-            # Arithmetic or command expansion
-            pass
-        elif self.current == "[":
-            # Obsolete arithmetic
-            pass
-        elif self.current == "'":
-            # string expansion
-            pass
-        elif self.current == '"':
-            # l10n
-            pass
-        if self.current == "{":
-            # ${foo}
-            pass
-        if self.current in self.SPECIAL_VARS:
-            # Bash specials vars, omitting $_
-            pass
-        else:
-            yield from self.parameter_name()
 
     def word(self):
         if self.current == '"':
