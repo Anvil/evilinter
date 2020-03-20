@@ -68,15 +68,6 @@ class Lexer:
     def consume_chars(self, chars: str, cls: Type):
         return self.consume_select(lambda char: char in chars, cls)
 
-    def consume_separator(self, cls: Type):
-        return self.consume_chars(self.SPACE_SEPARATOR, cls)
-
-    def consume_ifs(self, cls: Type):
-        return self.consume_chars(self.IFS, cls)
-
-    def consume_eol(self):
-        return self.consume_chars(self.EOL, tokens.EOL)
-
     def consume_rest_of_line(self, cls: Type):
         yield from self.consume_select(lambda char: char not in self.EOL, cls)
         yield from self.consume_eol()

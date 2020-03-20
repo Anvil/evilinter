@@ -4,9 +4,10 @@ from ..typing import TokenYielder
 from ._common import _CommonLexer
 from .tokens import *
 from .conditional import DoubleBracketConditionnalLexer
+from .whitespace improt WhiteSpaceLexer
 
 
-class BashLexer(_CommonLexer):
+class BashLexer(WhiteSpaceLexer):
 
     word_char = re.compile(r'[-a-zA-Z0-9_/]').fullmatch
 
@@ -55,7 +56,7 @@ class BashLexer(_CommonLexer):
                 raise NotImplementedError()
             elif self.current == ">":
                 yield OutputRedirectionToFile
-                yield from self.consume_separator(WhiteSpace)
+                yield from self.consume_separator()
                 yield from self.word()
         else:
             raise NotImplementedError()
@@ -88,7 +89,7 @@ class BashLexer(_CommonLexer):
             try:
                 consumer = consumers[self.current]
             except KeyError:
-                yield from self.consume_separator(WhiteSpace)
+                yield from self.consume_separator()
                 if self.word_char(self.current):
                     yield from self.word()
             else:

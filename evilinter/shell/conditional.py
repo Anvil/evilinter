@@ -8,6 +8,9 @@ from .tokens import *
 
 class DoubleBracketConditionnalLexer(_CommonLexer):
 
+    def consume_separator(self, include_newline=True):
+        return self.consume_separator(include_newline)
+
     def parameter_name(self) -> TokenYielder:
         if self.variable_first_char(self.current):
             self.forward()
@@ -32,9 +35,9 @@ class DoubleBracketConditionnalLexer(_CommonLexer):
         if self.__any_simple_word("eq", "ne", "lt", "le", "gt", "ge"):
             self.forward(2)
             yield BinaryIntegerOperator
-            yield from self.consume_ifs(WhiteSpace)
+            yield from self.consume_separator()
             yield from self.consume_select(str.isdigit, Number)
-            yield from self.consume_ifs(WhiteSpace)
+            yield from self.consume_separator()
             return
         if self.__any_simple_word("ef", "nt", "ot"):
             self.forward(2)
@@ -48,7 +51,7 @@ class DoubleBracketConditionnalLexer(_CommonLexer):
 
     def binary_operator_expression(self):
         yield from self.word()
-        yield from self.consume_ifs(WhiteSpace)
+        yield from self.consume_separator()
         yield from self.end_of_binary_operator_expression()
 
     def parenthesis(self):
@@ -60,14 +63,14 @@ class DoubleBracketConditionnalLexer(_CommonLexer):
     def __unary_expression(self, cls: TokenClass) -> TokenYielder:
         self.forward(2)
         yield cls
-        yield from self.consume_ifs(WhiteSpace)
+        yield from self.consume_separator()
         # Basically "one word" XXX: need refactoring with shell module.
 
     def expression(self) -> TokenYielder:
         if self.compare_word_ahead("!"):
             self.forward()
             yield NegationOperator
-            yield from self.consume_ifs(WhiteSpace)
+            yield from self.consume_separator()
             # Bash allows something like [[ ! ! ! ! ! .... ]] to be valid.
             yield from self.expression()
         elif self.current == "(" and not self.compare_ahead("(", offset=1):
@@ -86,7 +89,7 @@ class DoubleBracketConditionnalLexer(_CommonLexer):
     def __iter__(self) -> TokenYielder:
         self.forward(2)
         yield OpeningDoubleBracket
-        yield from self.consume_ifs(WhiteSpace)
+        yield from self.consume_separator()
         yield from self.expression()
         if self.compare_word_ahead("]", "]"):
             self.forward(2)

@@ -29,10 +29,6 @@ class DoubleQuotedString(Token):
     pass
 
 
-class WhiteSpace(Token):
-    pass
-
-
 class OpeningDoubleBracket(Token):
     pass
 
